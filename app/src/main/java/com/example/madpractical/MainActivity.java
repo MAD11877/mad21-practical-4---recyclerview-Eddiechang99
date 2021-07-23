@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    User b;
+    User user;
     Button followBtn;
     Button messageBtn;
 
@@ -23,25 +23,18 @@ public class MainActivity extends AppCompatActivity {
 
         followBtn = findViewById(R.id.btnFollow);
         messageBtn = findViewById(R.id.btnMsg);
-        Intent rec = getIntent();
-        int value = rec.getIntExtra("randomInt",0);
-        b = new User();
-        b.name = "MAD";
-        b.description = "test test test test test test test test test test";
-        b.id = 1;
-        b.followed = false;
+        user = (User)getIntent().getSerializableExtra("user");
 
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                b.followed = !b.followed;
-                if(b.followed) {
+                user.setFollowed(!user.getFollowed());
+                if(user.getFollowed()) {
                     Toast.makeText(MainActivity.this, "Followed", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Unfollowed", Toast.LENGTH_SHORT).show();
                 }
-
                 setFollowBtn();
             }
         });
@@ -55,19 +48,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView name = findViewById(R.id.txtName);
-        if(value == 0) {
-            name.setText(b.name);
-        } else {
-            name.setText(b.name + " " + value);
-        }
-
+        name.setText(user.getName());
         TextView description = findViewById(R.id.txtDescription);
-        description.setText(b.description);
+        description.setText(user.getDesc());
         setFollowBtn();
     }
 
     private void setFollowBtn() {
-        if (b.followed) {
+        if (user.getFollowed()) {
             followBtn.setText("Unfollow");
         } else {
             followBtn.setText("Follow");
